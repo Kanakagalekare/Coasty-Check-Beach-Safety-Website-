@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Boxicons -->
+  <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+  <!-- My CSS -->
+  <link rel="stylesheet" href="D:\Demo\style.css">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+      color: #333;
+    }
+
+    .container {
+      padding: 20px;
+    }
+
+    .beach-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .beach-header h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .details-card {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+
+    .details-card img {
+      width: 1030px;
+      height: 300px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .info-row {
+      display: flex;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+
+    .info-item {
+      flex: 1 1 50%;
+      padding: 5px 0;
+    }
+
+    .info-item span {
+      font-weight: bold;
+    }
+
+    .btn {
+      display: inline-block;
+      background-color: #ff5252;
+      color: white;
+      text-decoration: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      font-weight: bold;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background-color: #ff3030;
+    }
+
+    .dropdown {
+      margin-bottom: 20px;
+    }
+
+    #map {
+      width: 100%;
+      height: 400px;
+      border-radius: 8px;
+      margin-top: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+      
+
+    .container {
+  width: 120%;
+  max-width: 1100px;
+ 
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.dropdown {
+  margin-bottom: 20px;
+}
+
+.dropdown label {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8px;
+  display: inline-block;
+}
+
+#beach-select {
+  width: 100%;
+  padding: 10px 15px;
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  color: #333;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  appearance: none;  /* Remove default browser arrow */
+  cursor: pointer;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#beach-select:focus {
+  border-color: #ff5252;
+  box-shadow: 0 0 5px rgba(255, 82, 82, 0.5);
+}
+
+#beach-select option {
+  padding: 10px;
+  font-size: 16px;
+}
+
+#beach-select option:hover {
+  background-color: #f1f1f1;
+}
+
+ /*CSS for water quality*/
+ .container1 {
+      width: 90%;
+      max-width: 800px;
+      margin: 20px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    h1 {
+      text-align: center;
+      color: teal;
+      margin-bottom: 20px;
+    }
+    .parameter {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 8px;
+    }
+    .parameter.safe {
+      background-color: #d4edda;
+      color: #155724;
+    }
+    .parameter.unsafe {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+    .parameter .status {
+      font-weight: bold;
+    }
+    .footer {
+      margin-top: 20px;
+      text-align: center;
+    }
+    .footer .explore-btn {
+      padding: 10px 20px;
+      font-size: 16px;
+      color: #fff;
+      background-color: teal;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .footer .explore-btn:hover {
+      background-color: #007b7f;
+    }
+
+  </style>
+
+  <title>Coasty Check</title>
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <section id="sidebar">
+    <a href="#" class="brand">
+      <i class='bx bxs-smile'></i>
+      <span class="text">Beach Admin</span>
+    </a>
+    <ul class="side-menu top">
+      <li class="active">
+        <a href="D:\Demo\dashboard\index.html">
+          <i class='bx bxs-dashboard'></i>
+          <span class="text">Dashboard</span>
+        </a>
+      </li>
+      <li>
+        <a href="D:\Demo\dashboard\beaches.html">
+          <i class='bx bx-list-ul'></i>
+          <span class="text">ADD Beaches</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="D:\Demo\dashboard\activity.html">
+          <i class='bx bx-body'></i>
+          <span class="text">ADD Activity In-charge</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="D:\Demo\dashboard\notification.html">
+          <i class='bx bxs-message-dots'></i>
+          <span class="text">ADD Notifications</span>
+        </a>
+      </li>
+      <li>
+        <a href="D:\Demo\dashboard\weather.html">
+          <i class='bx bxs-cloud'></i>
+          <span class="text">Weather Forecast</span>
+        </a>
+      </li>
+
+    </ul>
+    <ul class="side-menu">
+      <li>
+        <a href="ocean.html">
+          <i class='bx bxs-bell'></i>
+          <span class="text">Notifications</span>
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          <i class='bx bxs-user-circle'></i>
+          <span class="text">Profile</span>
+        </a>
+      </li>
+      <li>
+        <a href="" class="logout">
+          <i class='bx bxs-log-out-circle'></i>
+          <span class="text">Logout</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+  <!-- SIDEBAR -->
+
+
+  <!-- CONTENT -->
+  <section id="content">
+
+    <!-- MAIN -->
+    <main>
+      <div class="head-title">
+        <div class="left">
+          <h1>Dashboard</h1>
+          <ul class="breadcrumb">
+            <li>
+              <a href="#">Dashboard</a>
+            </li>
+            <li><i class='bx bx-chevron-right'></i></li>
+            <li>
+              <a class="active" href="#">Home</a>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+      <img src="D:\Demo\img\bg.jpg" alt="Beaches Banner" style="width:100%; height: 300px; border-radius: 10px; margin-bottom: 20px;">
+      <ul class="box-info">
+        <li>
+          <i class='bx bx-water'></i>
+          <span class="text">
+            <h3 id="beachCount">0</h3>
+            <p>Number of Beaches</p>
+          </span>
+        </li>
+        <li>
+          <i class='bx bx-body'></i>
+          <span class="text">
+            <h3 id="InchargeCount">0</h3>
+            <p>Number of Activity In-charge</p>
+          </span>
+        </li>
+        
+        </li>
+      </ul>
+
+      <div class="container">
+
+       
+
+        
+  <div class="container">
+    <div class="dropdown">
+      <label for="beach-select">Select a beach:</label>
+      <select id="beach-select">
+        <option value="0">Munambam Beach</option>
+        <option value="1">Kuzhupilly Beach</option>
+        <option value="2">Puthuvypin Island Beach</option>
+        <option value="3">Cherai Beach</option>
+      </select>
+    </div>
+
+    <div class="beach-header">
+      <h1 id="beach-name">Munambam Beach</h1>
+      <span id="beach-location">IND > Suburb of Kochi > Munambam Beach</span>
+    </div>
+
+    <div class="details-card">
+      <img id="beach-image" src="D:/Demo/img/munambam-1.jpg" alt="Beach Image">
+      <div class="info-row">
+        <div class="info-item"><span>Weather:</span> <span id="weather"></span></div>
+        <div class="info-item"><span>Wind:</span> <span id="wind"></span></div>
+        <div class="info-item"><span>Water:</span> <span id="water"></span></div>
+        <div class="info-item"><span>Minimum Temperature:</span> <span id="temp_min"></span></div>
+        <div class="info-item"><span>Maximum Temperature:</span> <span id="temp_max"></span></div>
+        <div class="info-item"><span>Humidity:</span> <span id="humidity"></span></div>
+        <div class="info-item"><span>Sea Level:</span> <span id="sea_level"></span></div>
+      </div>
+      
+    </div>
+
+    <iframe id="map" src="" frameborder="0" allowfullscreen></iframe>
+
+    <p><strong>Distance from you:</strong> <span id="distance">Calculating...</span></p>
+
+    <p><strong>Description: </strong><span id="beach-description"></span></p>
+    </div>
+
+
+   <!-------Water Quality-->
+    <div class="container1">
+      <h1>Water Quality</h1>
+      <div id="parameters"></div>
+      <div id="summary" class="footer"></div>
+    </div>
+  
+    </div>
+
+
+      <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
+    
+        // Firebase configuration
+        const firebaseConfig = {
+        apiKey: "AIzaSyA5PPJOvBXrt1BXLXpNirWYLqYTi9PuyGg",
+        authDomain: "finalproject-7d8fd.firebaseapp.com",
+        databaseURL: "https://finalproject-7d8fd-default-rtdb.firebaseio.com/",
+        projectId: "finalproject-7d8fd",
+        storageBucket: "finalproject-7d8fd.appspot.com",
+        messagingSenderId: "1098406126947",
+        appId: "1:1098406126947:web:81cd954a947196683e9f56",
+          measurementId: "G-K0JHYPP2E9"
+        };
+        
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+    
+        // the number of beaches
+        const fetchBeachCount = () => {
+          const beachesRef = ref(db, 'BeachesSet');
+          onValue(beachesRef, (snapshot) => {
+            const beachCount = snapshot.size || Object.keys(snapshot.val() || {}).length;
+            document.getElementById('beachCount').innerText = beachCount;
+          });
+        };
+
+       // the number of activity in-charges
+    const fetchInchargeCount = () => {
+      const inchargesRef = ref(db, 'Activity-Incharges');
+      onValue(inchargesRef, (snapshot) => {
+        const inchargeCount = snapshot.size || Object.keys(snapshot.val() || {}).length;
+        document.getElementById('InchargeCount').innerText = inchargeCount;
+      });
+    };
+    
+        
+        //for beaches
+        window.addEventListener('load', fetchBeachCount);
+        // for activity incharge
+        window.addEventListener('load', fetchInchargeCount);
+
+      </script>
+
+      <script>
+        //For Weather 
+        const WEATHER_API_KEY = "815cc43555ed6b83d617e683b835f940";
+       const WEATHER_API_URL = "https://api.openweathermap.org/data/2.5/weather";
+
+    const beaches = [
+      {
+        name: "Munambam Beach",
+        location: "IND > North end of Vypeen Island > Munambam Beach",
+        image: "D:/Demo/img/munambam-1.jpg",
+        coordinates: [10.177208091816896, 76.16551870479276],
+        description: "Munambam is a suburb of Kochi, India at the north end of Vypeen Island, surrounded by the Arabian Sea on the west, Periyar river on the east, and a mouth of the sea on the north. The main occupation of its inhabitants is fishing.",
+      },
+      {
+        name: "Kuzhupilly Beach",
+        location: "IND > Vypeen > Kuzhupilly Beach",
+        image: "D:/Demo/img/Kuzhupilly.jpg",
+        coordinates: [10.110115122521192, 76.18691188355744],
+        description: "Kuzhupilly Beach, located in Vypeen, is known for its soft golden sands, calming waves, and ideal spot for swimming. It is relatively less crowded compared to other popular beaches in Kochi, making it perfect for those seeking solitude. The beach is surrounded by backwaters and features paddy fields and coconut groves.",
+      },
+      {
+        name: "Puthuvypin Island Beach",
+        location: "IND > Western Suburb of Kochi > Puthuvypin Island Beach",
+        image: "D:/Demo/img/Puthuvype.jpg",
+        coordinates: [10.010839250213472, 76.21536864195936],
+        description: "Puthuvype Beach, located in the western suburb of Kochi City, Kerala, is a less frequented beach. It offers stunning sunset views, making it a favorite spot for photographers and couples. The beach is a habitat for various bird species, making it a great spot for birdwatching. Fishing activities are prevalent, and you can witness local fishermen at work. The serene sea, green topography, and lone trees at the shore create an ideal destination. The beach is also home to a lighthouse.",
+      },
+      {
+        name: "Cherai Beach",
+        location: "IND > Northern side of Vypin Island > Cherai Beach",
+        image: "D:/Demo/img/Cherai.jpg",
+        coordinates: [10.1416623912175, 76.1782878841008],
+        description: "Cherai Beach is located in Cherai in the northern side of Vypin Island, a suburb of the city Kochi in the state of Kerala, India. One of the most visited beaches in the state, it is situated at around 25 km from downtown Kochi and 20 km from Cochin International Airport.",
+      },
+    ];
+
+    
+
+    const fetchWeatherData = async (lat, lon) => {
+      try {
+        const response = await fetch(
+          `${WEATHER_API_URL}?lat=${lat}&lon=${lon}&units=metric&appid=${WEATHER_API_KEY}`
+        );
+        const data = await response.json();
+        return {
+          weather: `${data.weather[0].description}, ${data.main.temp}°C`,
+          wind: `${data.wind.speed} km/h`,
+          water: `${data.main.feels_like}Feels like`,
+          tempMin: `${data.main.temp_min}°C`,
+          tempMax: `${data.main.temp_max}°C`,
+          humidity: `${data.main.humidity}%`,
+          seaLevel: data.main.sea_level ? `${data.main.sea_level} hPa` : "N/A",
+        };
+      } catch (error) {
+        console.error("Error fetching weather data:", error);
+        return {
+          weather: "Unavailable",
+          wind: "Unavailable",
+          water: "Unavailable",
+          tempMin: "Unavailable",
+          tempMax: "Unavailable",
+          humidity: "Unavailable",
+          seaLevel: "Unavailable",
+        };
+      }
+    };
+
+    const updateMap = (lat, lon) => {
+      const mapSrc = `https://www.google.com/maps?q=${lat},${lon}&hl=es;z=14&output=embed`;
+      document.getElementById("map").src = mapSrc;
+    };
+
+    const calculateDistance = (lat1, lon1, lat2, lon2) => {
+            const R = 6371; // Earth's radius in km
+            const toRad = (value) => (value * Math.PI) / 180;
+            const dLat = toRad(lat2 - lat1);
+            const dLon = toRad(lon2 - lon1);
+            const a = Math.sin(dLat / 2) ** 2 +
+                      Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+                      Math.sin(dLon / 2) ** 2;
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return (R * c).toFixed(2); // Distance in km
+        };
+
+    const updateBeachDetails = async (beachIndex) => {
+      const beach = beaches[beachIndex];
+      document.getElementById("beach-name").innerText = beach.name;
+      document.getElementById("beach-location").innerText = beach.location;
+      document.getElementById("beach-image").src = beach.image;
+      document.getElementById("beach-description").innerText = beach.description;
+
+      const weatherData = await fetchWeatherData(beach.coordinates[0], beach.coordinates[1]);
+      document.getElementById("weather").innerText = weatherData.weather;
+      document.getElementById("wind").innerText = weatherData.wind;
+      document.getElementById("water").innerText = weatherData.water;
+      document.getElementById("temp_min").innerText = weatherData.tempMin;
+      document.getElementById("temp_max").innerText = weatherData.tempMax;
+      document.getElementById("humidity").innerText = weatherData.humidity;
+      document.getElementById("sea_level").innerText = weatherData.seaLevel;
+
+      updateMap(beach.coordinates[0], beach.coordinates[1]);
+
+      if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition((position) => {
+                    const userLat = position.coords.latitude;
+                    const userLon = position.coords.longitude;
+                    const distance = calculateDistance(userLat, userLon, beach.coordinates[0], beach.coordinates[1]);
+                    document.getElementById("distance").innerText = `${distance} km`;
+                }, () => {
+                    document.getElementById("distance").innerText = "Unable to fetch your location.";
+                });
+            } else {
+                document.getElementById("distance").innerText = "Geolocation is not supported by your browser.";
+            }
+      
+    };
+
+    document.getElementById("beach-select").addEventListener("change", (event) => {
+      updateBeachDetails(event.target.value);
+    });   
+    updateBeachDetails(0);
+
+
+
+
+
+
+
+    // For Water Quality
+
+    const apiKey = "446d183e64e64e8eb4bca1407ab02a89"; 
+    const station = "kochi";
+    const parameters = [
+      { name: "currentspeed", min: 0, max: 1.5, unit: "m/s" },
+      { name: "pH", min: 7.4, max: 8.3, unit: "" },
+      { name: "salinity", min: 25, max: 38, unit: "psu" },
+      { name: "temperature", min: 23, max: 32, unit: "°C" },
+      { name: "dissolvedoxygen", min: 1.5, max: 5, unit: "mg/l" },
+      { name: "dissolvedmethane", min: 0.0001, max: 3, unit: "µg/l" },
+      { name: "pCO2 air", min: 350, max: 450, unit: "µatm" },
+      { name: "pCO2 water", min: 200, max: 700, unit: "µatm" },
+      { name: "chlorophyll", min: 0.0001, max: 10, unit: "µg/l" },
+      { name: "phycocyanin", min: 0.0001, max: 50, unit: "µg/l" },
+      { name: "phycoerythrin", min: 0.0001, max: 50, unit: "µg/l" },
+      { name: "turbidity", min: 0.0001, max: 50, unit: "NTU" },
+      { name: "scattering", min: 0.0001, max: 10, unit: "NTU" },
+      { name: "cdom", min: 0.0001, max: 2, unit: "mg/l" },
+    ];
+   
+    async function fetchWaterData() {
+      const parametersDiv = document.getElementById("parameters");
+      const summaryDiv = document.getElementById("summary");
+      let safeCount = 0;
+
+      parametersDiv.innerHTML = ""; 
+      summaryDiv.innerHTML = ""; 
+
+      for (const param of parameters) {
+        try {
+          const url = `https://gemini.incois.gov.in/OceanDataAPI/api/wqns/${station}/${param.name}`;
+          const response = await fetch(url, {
+            headers: { apikey: apiKey },
+          });
+
+          if (!response.ok) {
+            throw new Error(`Failed to fetch ${param.name}`);
+          }
+
+          const data = await response.json();
+          const value = parseFloat(data.value || 0).toFixed(2);
+          const observationTime = data.timestamp || "N/A";
+          const isSafe = value >= param.min && value <= param.max;
+
+          if (isSafe) safeCount++;
+
+          const parameterDiv = `
+            <div class="parameter ${isSafe ? "safe" : "unsafe"}">
+              <span>${param.name} (Value: ${value} ${param.unit})</span>
+              <span class="status">${isSafe ? "Safe" : "Unsafe"}</span>
+              <span>Observation Time: ${observationTime}</span>
+            </div>
+          `;
+
+          parametersDiv.innerHTML += parameterDiv;
+        } catch (error) {
+          console.error(`Error fetching ${param.name}:`, error);
+
+          parametersDiv.innerHTML += `
+            <div class="parameter unsafe">
+              <span>${param.name}</span>
+              <span class="status">Error</span>
+            </div>
+          `;
+        }
+      }
+
+      const isBeachSafe = safeCount >= parameters.length / 2;
+      summaryDiv.innerHTML = `
+        <div style="font-weight: bold; color: ${
+          isBeachSafe ? "green" : "red"
+        };">
+          ${isBeachSafe ? "You can visit the beach." : "The beach is unsafe to visit."}
+        </div>
+        
+      `;
+    }
+
+    fetchWaterData();
+
+    </script>
+
+  </main>
+  
+</section>
+  
+
+</body>
+</html>

@@ -1,0 +1,134 @@
+/*CSs for activities folder*/ 
+
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    display: flex;
+  
+    height: 200vh;
+    background-color: #f0f4f8;
+}
+
+.container {
+    width: 100%;
+    max-width: 800px;
+    margin: 100px;
+    text-align: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 2rem;
+    
+}
+
+.activity-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.activity-item {
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px;
+    border-radius: 8px;
+    width: 130px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.activity-item:hover {
+    background-color: #45a049;
+    transform: translateY(-5px);
+}
+
+.activity-details {
+    margin-top: 30px;
+    padding: 25px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    display: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+.activity-details h2 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.activity-details p {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+#bookingForm label {
+    display: block;
+    margin-top: 10px;
+    color: #333;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+#bookingForm input[type="text"],
+#bookingForm input[type="time"],
+#bookingForm select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 0.9rem;
+}
+
+.button-check,
+.button-book {
+    background-color: #008CBA;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background-color 0.3s;
+    font-size: 1rem;
+}
+
+.button-check {
+    background-color: #4CAF50;
+    margin-right: 10px;
+}
+
+.button-check:hover {
+    background-color: #45a049;
+}
+
+.button-book:hover {
+    background-color: #007B9A;
+}
+
+#availabilityStatus {
+    margin-top: 15px;
+    font-size: 0.95rem;
+    color: #008000;
+    font-weight: bold;
+}

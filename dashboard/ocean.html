@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <!-- Boxicons -->
+   <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+   <!-- My CSS -->
+   <link rel="stylesheet" href="D:\Demo\style.css">
+ 
+  <title>Ocean Alert Data</title>
+
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+  margin: 50px;
+  padding: 10px;
+  background-color: #f4f4f4;
+}
+
+.container {
+  max-width: 500;
+
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+  text-align: center;
+  color: #333;
+}
+
+#loading {
+  text-align: center;
+  color: #555;
+}
+
+.card {
+  margin: 10px 0;
+  padding: 15px;
+  border-radius: 8px;
+  color: #333;
+}
+
+.card.yellow {
+  background-color: yellow;
+}
+
+.card.red {
+  background-color: red;
+  color: white;
+}
+
+.card.green {
+  background-color: green;
+  color: white;
+}
+
+.card.orange {
+  background-color: orange;
+  color: white;
+}
+
+.card.white {
+  background-color: white;
+}
+
+.card h3 {
+  margin: 0 0 10px 0;
+}
+
+.card p {
+  margin: 5px 0;
+}
+
+  </style>
+</head>
+<body>
+    <!-- SIDEBAR -->
+  <section id="sidebar">
+    <a href="#" class="brand">
+      <i class='bx bxs-smile'></i>
+      <span class="text">Beach Admin</span>
+    </a>
+    <ul class="side-menu top">
+      <li class="active">
+        <a href="D:\Demo\dashboard\index.html">
+          <i class='bx bxs-dashboard'></i>
+          <span class="text">Dashboard</span>
+        </a>
+      </li>
+      <li>
+        <a href="D:\Demo\dashboard\beaches.html">
+          <i class='bx bx-list-ul'></i>
+          <span class="text">ADD Beaches</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="D:\Demo\dashboard\activity.html">
+          <i class='bx bx-body'></i>
+          <span class="text">ADD Activity In-charge</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="D:\Demo\dashboard\notification.html">
+          <i class='bx bxs-message-dots'></i>
+          <span class="text">ADD Notifications</span>
+        </a>
+      </li>
+      <li>
+        <a href="D:\Demo\dashboard\weather.html">
+          <i class='bx bxs-cloud'></i>
+          <span class="text">Weather Forecast</span>
+        </a>
+      </li>
+
+    </ul>
+    <ul class="side-menu">
+      <li>
+        <a href="ocean.html">
+          <i class='bx bxs-bell'></i>
+          <span class="text">Notifications</span>
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          <i class='bx bxs-user-circle'></i>
+          <span class="text">Profile</span>
+        </a>
+      </li>
+      <li>
+        <a href="D:\Demo\login-signup\login.html" class="logout">
+          <i class='bx bxs-log-out-circle'></i>
+          <span class="text">Logout</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+  <!-- SIDEBAR -->
+
+  <!-- CONTENT -->
+  <section id="content">
+
+    <!-- MAIN -->
+    <main>
+      <div class="head-title">
+        <div class="left">
+          <h1>Dashboard</h1>
+          <ul class="breadcrumb">
+            <li>
+              <a href="#">Dashboard</a>
+            </li>
+            <li><i class='bx bx-chevron-right'></i></li>
+            <li>
+              <a class="active" href="#">Notification</a>
+            </li>
+          </ul>
+        </div>
+       </div>
+ 
+        <div class="container">
+            <header>
+            <h1>Ocean Alert Data</h1>
+            </header>
+            <main id="content">
+            <p id="loading">Loading data...</p>
+            </main>
+        </div>
+    </main>
+
+
+<script>
+    
+const url1 = 'https://gemini.incois.gov.in/incoisapi/rest/ssalatestgeo';
+const url2 = 'https://gemini.incois.gov.in/incoisapi/rest/currentslatestgeo';
+const apiKey = '446d183e64e64e8eb4bca1407ab02a89';
+
+
+const contentContainer = document.getElementById('content');
+const loadingElement = document.getElementById('loading');
+
+// Fetch data 
+async function fetchAlertData() {
+  try {
+    const [response1, response2] = await Promise.all([
+      fetch(url1, { headers: { Authorization: apiKey } }),
+      fetch(url2, { headers: { Authorization: apiKey } }),
+    ]);
+
+    if (!response1.ok || !response2.ok) {
+      throw new Error('Failed to fetch data from one or more APIs.');
+    }
+
+    const data1 = await response1.json();
+    const data2 = await response2.json();
+
+    const propertiesData = [
+      ...extractProperties(data1),
+      ...extractProperties(data2),
+    ];
+
+    displayData(propertiesData);
+  } catch (error) {
+    loadingElement.textContent = `Error: ${error.message}`;
+  }
+}
+
+// Extract "properties" 
+function extractProperties(data) {
+  if (!data.features) return [];
+  return data.features.map((feature) => feature.properties);
+}
+
+
+function getColorClass(color) {
+  switch (color?.toLowerCase()) {
+    case 'yellow':
+      return 'yellow';
+    case 'red':
+      return 'red';
+    case 'green':
+      return 'green';
+    case 'orange':
+      return 'orange';
+    default:
+      return 'white';
+  }
+}
+
+// Display the data
+function displayData(propertiesData) {
+  loadingElement.style.display = 'none';
+  contentContainer.innerHTML = '';
+
+  propertiesData.forEach((property) => {
+    const card = document.createElement('div');
+    card.className = `card ${getColorClass(property.Color)}`;
+    card.innerHTML = `
+      <h3>Alert: ${property.Alert || 'N/A'}</h3>
+      <p><strong>District:</strong> ${property.District || 'N/A'}</p>
+      <p><strong>State:</strong> ${property.STATE || 'N/A'}</p>
+      <p><strong>Message:</strong> ${property.Message || 'N/A'}</p>
+      <p><strong>Color:</strong> ${property.Color || 'N/A'}</p>
+      <p><strong>Issue Date:</strong> ${property['Issue Date'] || 'N/A'}</p>
+    `;
+    contentContainer.appendChild(card);
+  });
+}
+
+// Fetch data when the page loads
+fetchAlertData();
+
+  </script>
+</body>
+</html>

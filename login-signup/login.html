@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login & Signup</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f4f4f4;
+    }
+    .container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 300px;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+    input {
+      margin-bottom: 15px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      padding: 10px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    .toggle {
+      text-align: center;
+      margin-top: 10px;
+    }
+    .toggle a {
+      color: #007bff;
+      text-decoration: none;
+    }
+    .toggle a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2 id="form-title">Login</h2>
+    <form id="auth-form">
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <button type="submit" id="auth-button">Login</button>
+    </form>
+    <div class="toggle">
+      <p id="toggle-text">Don't have an account? <a href="signup.html" id="toggle-link">Sign up</a></p>
+    </div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-auth.js"></script>
+  
+  <script>
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyA5PPJOvBXrt1BXLXpNirWYLqYTi9PuyGg",
+      authDomain: "finalproject-7d8fd.firebaseapp.com",
+      databaseURL: "https://finalproject-7d8fd-default-rtdb.firebaseio.com/",
+      projectId: "finalproject-7d8fd",
+      storageBucket: "finalproject-7d8fd.appspot.com",
+      messagingSenderId: "1098406126947",
+      appId: "1:1098406126947:web:81cd954a947196683e9f56",
+    };
+
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    const formTitle = document.getElementById('form-title');
+    const authButton = document.getElementById('auth-button');
+    const toggleText = document.getElementById('toggle-text');
+    const toggleLink = document.getElementById('toggle-link');
+    const authForm = document.getElementById('auth-form');
+    let isLogin = true;
+
+    // Toggle between Login and Signup
+    toggleLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      isLogin = !isLogin;
+      formTitle.textContent = isLogin ? 'Login' : 'Sign Up';
+      authButton.textContent = isLogin ? 'Login' : 'Sign Up';
+      toggleText.innerHTML = isLogin
+        ? "Don't have an account? <a href='signup.html' id='toggle-link'>Sign up</a>"
+        : "Already have an account? <a href='login.html' id='toggle-link'>Login</a>";
+    });
+
+    // Handle form submission
+    authForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      try {
+        if (isLogin) {
+          // Login user
+          await auth.signInWithEmailAndPassword(email, password);
+          alert('Login successful!');
+          window.location.href = "index.html"; // Redirect to the homepage
+        } else {
+          // Signup user
+          await auth.createUserWithEmailAndPassword(email, password);
+          alert('Signup successful!');
+          window.location.href = "login.html"; // Redirect to the homepage
+        }
+      } catch (error) {
+        alert(error.message); // Show the error message
+      }
+    });
+  </script>
+</body>
+</html>
