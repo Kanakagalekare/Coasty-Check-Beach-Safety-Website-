@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Boxicons -->
+  <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+  <!-- My CSS -->
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #f5f5f5;
+        height: 100vh;
+    }
+
+    .main-container {
+        display: flex;
+        gap: 20px;
+        width: 90%;
+        max-width: 1200px;
+        margin: 20px auto;
+    }
+
+    .form-container {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        flex: 1;
+    }
+
+    .activities-container {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        flex: 1.5;
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+
+    h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    input, select, textarea {
+        width: calc(100% - 20px);
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    button {
+        width: 100%;
+        padding: 10px;
+        background-color: #1abc9c;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #0e5144;
+    }
+
+    .activity-list {
+        margin-top: 10px;
+    }
+
+    .activity-item {
+        background: #f9f9f9;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        position: relative;
+    }
+
+    .activity-item h4 {
+        margin: 0 0 5px 0;
+    }
+
+    .actions {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+    }
+
+    .actions button {
+        background: none;
+        border: none;
+        color: #1abc9c;
+        cursor: pointer;
+        margin-left: 5px;
+        width: auto;
+    }
+
+    .actions button:hover {
+        color: #0e5144;
+    }
+</style>
+
+  <title>Coasty Check</title>
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <section id="sidebar">
+    <a href="#" class="brand">
+      <i class='bx bxs-smile'></i>
+      <span class="text">Activity Manager</span>
+    </a>
+    <ul class="side-menu top">
+      <li class="active">
+        <a href="D:\Demo\activitymanager\index.html">
+          <i class='bx bxs-dashboard'></i>
+          <span class="text">Dashboard</span>
+        </a>
+      </li>
+      <li>
+        <a href="D:\Demo\activitymanager\addactivity.html">
+            <i class='bx bx-swim'></i>
+          <span class="text">ADD Activity</span>
+        </a>
+      </li>
+
+
+      <li>
+        <a href="D:\Demo\activitymanager\addnotification.html">
+          <i class='bx bxs-message-dots'></i>
+          <span class="text">ADD Notifications</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="#">
+          <i class='bx bxs-cloud'></i>
+          <span class="text">Bookings</span>
+        </a>
+      </li>
+
+    </ul>
+    <ul class="side-menu">
+      <li>
+        <a href="ocean.html">
+          <i class='bx bxs-bell'></i>
+          <span class="text">Notifications</span>
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          <i class='bx bxs-user-circle'></i>
+          <span class="text">Profile</span>
+        </a>
+      </li>
+      <li>
+        <a href="" class="logout">
+          <i class='bx bxs-log-out-circle'></i>
+          <span class="text">Logout</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+  <!-- SIDEBAR -->
+
+
+  <!-- CONTENT -->
+  <section id="content">
+
+    <!-- MAIN -->
+    <main>
+      <div class="head-title">
+        <div class="left">
+          <h1>Dashboard</h1>
+          <ul class="breadcrumb">
+            <li>
+              <a href="#">Dashboard</a>
+            </li>
+            <li><i class='bx bx-chevron-right'></i></li>
+            <li>
+              <a class="active" href="#">Home</a>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+      <img src="D:\Demo\img\managerbg.jpg" alt="Beaches Banner" style="width:100%; height: 300px; border-radius: 10px; margin-bottom: 20px;">
+      <ul class="box-info">
+        <li>
+            <i class='bx bx-swim'></i>
+          <span class="text">
+            <h3 id="activityCount">0</h3>
+            <p>Number of Activity</p>
+          </span>
+        </li>
+        <li>
+          <i class='bx bx-body'></i>
+          <span class="text">
+            <h3 id="bookCount">0</h3>
+            <p>Number of Bookings</p>
+          </span>
+        </li>
+        
+        </li>
+      </ul>
+
+      <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
+    
+        // Firebase configuration
+        const firebaseConfig = {
+        apiKey: "AIzaSyA5PPJOvBXrt1BXLXpNirWYLqYTi9PuyGg",
+        authDomain: "finalproject-7d8fd.firebaseapp.com",
+        databaseURL: "https://finalproject-7d8fd-default-rtdb.firebaseio.com/",
+        projectId: "finalproject-7d8fd",
+        storageBucket: "finalproject-7d8fd.appspot.com",
+        messagingSenderId: "1098406126947",
+        appId: "1:1098406126947:web:81cd954a947196683e9f56",
+          measurementId: "G-K0JHYPP2E9"
+        };
+        
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+    
+        // the number of activity
+        const fetchActivityCount = () => {
+          const activityRef = ref(db, 'beach-activities');
+          onValue(activityRef, (snapshot) => {
+            const activityCount = snapshot.size || Object.keys(snapshot.val() || {}).length;
+            document.getElementById('activityCount').innerText = activityCount;
+          });
+        };
+
+       // the number of booking
+    const fetchBookCount = () => {
+      const bookingRef = ref(db, 'beach-activities');
+      onValue(bookingRef, (snapshot) => {
+        const bookCount = snapshot.size || Object.keys(snapshot.val() || {}).length;
+        document.getElementById('BookCount').innerText = bookCount;
+      });
+    };
+    
+        
+        //for beaches
+        window.addEventListener('load', fetchActivityCount);
+        // for activity incharge
+        window.addEventListener('load', fetchBookCount);
+
+      </script>
+  </main>
+  
+</section>
+  
+
+</body>
+</html>
