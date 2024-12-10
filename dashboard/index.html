@@ -238,6 +238,13 @@
           <span class="text">Weather Forecast</span>
         </a>
       </li>
+      <li>
+        <a href="D:\Demo\dashboard\map.html">
+          <i class='bx bxs-map'></i>
+          <span class="text">Coastal Map</span>
+        </a>
+      </li>
+
 
     </ul>
     <ul class="side-menu">
@@ -248,7 +255,7 @@
         </a>
       </li>
       <li>
-        <a href="#">
+        <a href="D:\Demo\dashboard\B-profile.html">
           <i class='bx bxs-user-circle'></i>
           <span class="text">Profile</span>
         </a>
@@ -347,15 +354,6 @@
     </div>
 
 
-   <!-------Water Quality-->
-    <div class="container1">
-      <h1>Water Quality</h1>
-      <div id="parameters"></div>
-      <div id="summary" class="footer"></div>
-    </div>
-  
-    </div>
-
 
       <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
@@ -404,6 +402,8 @@
       </script>
 
       <script>
+
+        
         //For Weather 
         const WEATHER_API_KEY = "815cc43555ed6b83d617e683b835f940";
        const WEATHER_API_URL = "https://api.openweathermap.org/data/2.5/weather";
@@ -529,88 +529,6 @@
 
 
 
-
-
-    // For Water Quality
-
-    const apiKey = "446d183e64e64e8eb4bca1407ab02a89"; 
-    const station = "kochi";
-    const parameters = [
-      { name: "currentspeed", min: 0, max: 1.5, unit: "m/s" },
-      { name: "pH", min: 7.4, max: 8.3, unit: "" },
-      { name: "salinity", min: 25, max: 38, unit: "psu" },
-      { name: "temperature", min: 23, max: 32, unit: "°C" },
-      { name: "dissolvedoxygen", min: 1.5, max: 5, unit: "mg/l" },
-      { name: "dissolvedmethane", min: 0.0001, max: 3, unit: "µg/l" },
-      { name: "pCO2 air", min: 350, max: 450, unit: "µatm" },
-      { name: "pCO2 water", min: 200, max: 700, unit: "µatm" },
-      { name: "chlorophyll", min: 0.0001, max: 10, unit: "µg/l" },
-      { name: "phycocyanin", min: 0.0001, max: 50, unit: "µg/l" },
-      { name: "phycoerythrin", min: 0.0001, max: 50, unit: "µg/l" },
-      { name: "turbidity", min: 0.0001, max: 50, unit: "NTU" },
-      { name: "scattering", min: 0.0001, max: 10, unit: "NTU" },
-      { name: "cdom", min: 0.0001, max: 2, unit: "mg/l" },
-    ];
-   
-    async function fetchWaterData() {
-      const parametersDiv = document.getElementById("parameters");
-      const summaryDiv = document.getElementById("summary");
-      let safeCount = 0;
-
-      parametersDiv.innerHTML = ""; 
-      summaryDiv.innerHTML = ""; 
-
-      for (const param of parameters) {
-        try {
-          const url = `https://gemini.incois.gov.in/OceanDataAPI/api/wqns/${station}/${param.name}`;
-          const response = await fetch(url, {
-            headers: { apikey: apiKey },
-          });
-
-          if (!response.ok) {
-            throw new Error(`Failed to fetch ${param.name}`);
-          }
-
-          const data = await response.json();
-          const value = parseFloat(data.value || 0).toFixed(2);
-          const observationTime = data.timestamp || "N/A";
-          const isSafe = value >= param.min && value <= param.max;
-
-          if (isSafe) safeCount++;
-
-          const parameterDiv = `
-            <div class="parameter ${isSafe ? "safe" : "unsafe"}">
-              <span>${param.name} (Value: ${value} ${param.unit})</span>
-              <span class="status">${isSafe ? "Safe" : "Unsafe"}</span>
-              <span>Observation Time: ${observationTime}</span>
-            </div>
-          `;
-
-          parametersDiv.innerHTML += parameterDiv;
-        } catch (error) {
-          console.error(`Error fetching ${param.name}:`, error);
-
-          parametersDiv.innerHTML += `
-            <div class="parameter unsafe">
-              <span>${param.name}</span>
-              <span class="status">Error</span>
-            </div>
-          `;
-        }
-      }
-
-      const isBeachSafe = safeCount >= parameters.length / 2;
-      summaryDiv.innerHTML = `
-        <div style="font-weight: bold; color: ${
-          isBeachSafe ? "green" : "red"
-        };">
-          ${isBeachSafe ? "You can visit the beach." : "The beach is unsafe to visit."}
-        </div>
-        
-      `;
-    }
-
-    fetchWaterData();
 
     </script>
 

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Boxicons -->
+  <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+
+   <!-- Leaflet CSS -->
+   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+
+
+  <!-- My CSS -->
+  <link rel="stylesheet" href="style.css">
+  
+  <style>
+    
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+       
+    }
+    #map {
+       
+      width: 100%;
+      height: 600px;
+      border-radius: 8px;
+      margin-top: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .info-box {
+        background-color: white;
+        padding: 10px;
+        border-radius: 5px;
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        z-index: 999;
+    }
+    .alert-high {
+        background-color: red;
+        color: white;
+    }
+    .alert-moderate {
+        background-color: orange;
+        color: white;
+    }
+    .alert-low {
+        background-color: green;
+        color: white;
+    }
+</style>
+ 
+  <title>Coasty Check</title>
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <section id="sidebar">
+    <a href="#" class="brand">
+      <i class='bx bxs-smile'></i>
+      <span class="text">Beach Admin</span>
+    </a>
+    <ul class="side-menu top">
+      <li class="active">
+        <a href="D:\Demo\dashboard\index.html">
+          <i class='bx bxs-dashboard'></i>
+          <span class="text">Dashboard</span>
+        </a>
+      </li>
+      <li>
+        <a href="D:\Demo\dashboard\beaches.html">
+          <i class='bx bx-list-ul'></i>
+          <span class="text">ADD Beaches</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="D:\Demo\dashboard\activity.html">
+          <i class='bx bx-body'></i>
+          <span class="text">ADD Activity In-charge</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="D:\Demo\dashboard\notification.html">
+          <i class='bx bxs-message-dots'></i>
+          <span class="text">ADD Notifications</span>
+        </a>
+      </li>
+      <li>
+        <a href="D:\Demo\dashboard\weather.html">
+          <i class='bx bxs-cloud'></i>
+          <span class="text">Weather Forecast</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="D:\Demo\dashboard\map.html">
+            <i class='bx bxs-map'></i>
+          <span class="text">Coastal Map</span>
+        </a>
+      </li>
+
+    </ul>
+    <ul class="side-menu">
+      <li>
+        <a href="ocean.html">
+          <i class='bx bxs-bell'></i>
+          <span class="text">Notifications</span>
+        </a>
+      </li>
+      <li>
+        <a href="D:\Demo\dashboard\B-profile.html">
+          <i class='bx bxs-user-circle'></i>
+          <span class="text">Profile</span>
+        </a>
+      </li>
+      <li>
+        <a href="" class="logout">
+          <i class='bx bxs-log-out-circle'></i>
+          <span class="text">Logout</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+  <!-- SIDEBAR -->
+
+
+  <!-- CONTENT -->
+  <section id="content">
+
+    <!-- MAIN -->
+    <main>
+      <div class="head-title">
+        <div class="left">
+          <h1>Dashboard</h1>
+          <ul class="breadcrumb">
+            <li>
+              <a href="#">Dashboard</a>
+            </li>
+            <li><i class='bx bx-chevron-right'></i></li>
+            <li>
+              <a class="active" href="#">Coastal Map</a>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+  </main> 
+
+  
+
+<div id="map"></div>
+
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+<script>
+    // Initialize the map
+    const map = L.map('map').setView([20.5937, 78.9629], 5); // Center of India
+
+    // Set up the tile layer
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    
+
+    // Function to set color based on alert level
+    function getAlertColor(alertLevel) {
+        switch (alertLevel) {
+            case "high": return "red";
+            case "moderate": return "orange";
+            case "low": return "green";
+            default: return "gray";
+        }
+    }
+
+    // Sample coastline boundaries (these would typically be polygons or GeoJSON data)
+    const coastalRegions = [
+    { name: "Gujarat", coordinates: [[20.0, 70.0], [20.5, 70.5], [20.0, 71.0]], alert: "moderate" },
+    { name: "Maharashtra", coordinates: [[18.6, 72.8], [18.8, 73.0], [18.6, 73.2]], alert: "low" },
+    { name: "Goa", coordinates: [[15.5, 73.8], [15.8, 74.0], [15.7, 74.2]], alert: "low" },
+    { name: "Kerala", coordinates: [[10.0, 76.0], [10.3, 76.5], [10.2, 76.8]], alert: "low" },
+    { name: "Tamil Nadu", coordinates: [[8.6, 78.0], [8.9, 78.4], [8.8, 78.6]], alert: "low" },
+    { name: "Andhra Pradesh", coordinates: [[17.0, 82.0], [17.3, 82.3], [17.1, 82.6]], alert: "moderate" },
+    { name: "Odisha", coordinates: [[19.8, 85.8], [20.0, 86.0], [19.9, 86.3]], alert: "moderate" },
+    { name: "West Bengal", coordinates: [[21.6, 87.5], [22.0, 87.7], [21.9, 88.0]], alert: "low" },
+    { name: "Andaman and Nicobar Islands", coordinates: [[6.8, 93.0], [7.2, 93.3], [6.9, 93.5]], alert: "moderate" },
+    { name: "Lakshadweep", coordinates: [[10.5, 72.5], [10.8, 73.0], [10.7, 73.2]], alert: "low" },
+    { name: "Karnataka", coordinates: [[13.0, 74.0], [13.5, 74.5], [13.3, 74.8]], alert: "low" },
+    { name: "Puducherry", coordinates: [[11.9, 79.8], [12.0, 80.0], [11.8, 80.1]], alert: "moderate" },
+    { name: "Daman and Diu", coordinates: [[20.4, 72.9], [20.5, 73.0], [20.3, 73.1]], alert: "moderate" },
+    { name: "Kochi", coordinates: [[9.9, 76.2], [10.2, 76.4], [9.8, 76.6]], alert: "low" },
+    { name: "Surat", coordinates: [[21.2, 72.9], [21.4, 73.0], [21.3, 73.1]], alert: "moderate" },
+    { name: "Vizag", coordinates: [[17.7, 83.2], [17.9, 83.5], [17.8, 83.6]], alert: "low" },
+    { name: "Chennai", coordinates: [[13.0, 80.2], [13.2, 80.4], [13.1, 80.6]], alert: "moderate" },
+    { name: "Mumbai", coordinates: [[18.9, 72.8], [19.1, 73.0], [18.9, 73.2]], alert: "low" },
+    { name: "Vijayawada", coordinates: [[16.5, 80.6], [16.7, 80.7], [16.6, 80.9]], alert: "moderate" },
+    { name: "Rameswaram", coordinates: [[9.3, 79.3], [9.4, 79.4], [9.3, 79.5]], alert: "moderate" }
+];
+
+
+    // Loop through coastal regions and add them to the map
+    coastalRegions.forEach(region => {
+        const alertColor = getAlertColor(region.alert);
+
+      // Add circle for the region instead of polygon
+    L.circle([region.coordinates[0][0], region.coordinates[0][1]], {
+    color: alertColor,
+    weight: 3,
+    fillColor: alertColor,
+    fillOpacity: 0.5,
+    radius: 50000  // Set an appropriate radius in meters for each circle
+    }).addTo(map).bindPopup(`<b>${region.name}</b><br>Alert Level: ${region.alert}`);
+
+
+    });
+
+</script>
+</section>
+</body>
+</html>

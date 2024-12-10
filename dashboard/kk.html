@@ -1,93 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Firestore Data Fetch</title>
-    <style>
-      body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    background-color: #f4f4f9;
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beach Activities</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f0f8ff;
+      color: #333;
+    }
 
-h1 {
-    text-align: center;
-    color: #333;
-}
+    .container {
+      padding: 20px;
+    }
 
-#data-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-}
+    h1 {
+      text-align: center;
+      color: #0077b6;
+    }
 
-.card {
-    background-color: white;
-    border: 1px solid #ddd;
-    padding: 15px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 300px;
-}
+    .card {
+      display: flex;
+      align-items: center;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 15px;
+      margin: 10px 0;
+      background: #fff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
 
-.card h3 {
-    margin-top: 0;
-    color: #007bff;
-}
+    .card img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-right: 15px;
+    }
 
-    </style>
+    .card h2 {
+      color: #005f73;
+      margin: 0;
+    }
+
+    .card p {
+      margin: 5px 0;
+    }
+
+    .card .price {
+      font-weight: bold;
+      color: #007f5f;
+    }
+
+    .card .time {
+      color: #6a0572;
+    }
+  </style>
 </head>
 <body>
-    <h1>Firestore Data Display</h1>
-    <div id="data-container">
-        <!-- Fetched data will be displayed here -->
-    </div>
-    <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js"></script>
-
-
-    <script>
-    // Import Firebase configuration and Firestore
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js";
-      import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js";
-      
-      // Your Firebase configuration
-      const firebaseConfig = {
-          apiKey: "AIzaSyA5PPJOvBXrt1BXLXpNirWYLqYTi9PuyGg",
-          authDomain: "finalproject-7d8fd.firebaseapp.com",
-          projectId: "finalproject-7d8fd",
-          storageBucket: "finalproject-7d8fd.appspot.com",
-          messagingSenderId: "1098406126947",
-          appId: "1:1098406126947:web:81cd954a947196683e9f56"
-
-          
-      };
-      
-      // Initialize Firebase and Firestore
-      const app = initializeApp(firebaseConfig);
-      const db = getFirestore(app);
-      
-      // Fetch data from Firestore
-      async function fetchData() {
-          const dataContainer = document.getElementById('data-container');
-          const querySnapshot = await getDocs(collection(db, "bookings"));
-      
-          querySnapshot.forEach((doc) => {
-              const data = doc.data();
-              const card = document.createElement('div');
-              card.className = 'card';
-              card.innerHTML = `
-                  <h3>${data.title || "Untitled"}</h3>
-                  <p>${data.description || "No description available."}</p>
-              `;
-              dataContainer.appendChild(card);
-          });
+  <div class="container">
+    <h1>Beach Activities</h1>
+    <div id="beach-list"></div>
+  </div>
+  <script>
+    // Sample Data
+    const activities = [
+      {
+        name: "Jet Skiing",
+        beach: "Bondi Beach",
+        location: "Sydney, Australia",
+        price: "$50/hour",
+        timeSlot: "9:00 AM - 6:00 PM",
+        description: "Experience the thrill of jet skiing with trained instructors.",
+        image: "D:/Demo/img/jet.jpg"
+      },
+      {
+        name: "Parasailing",
+        beach: "Goa Beach",
+        location: "Goa, India",
+        price: "$40/ride",
+        timeSlot: "10:00 AM - 5:00 PM",
+        description: "Enjoy a breathtaking view from above as you parasail over the ocean.",
+        image: "D:/Demo/img/parasiling.jpg"
+      },
+      {
+        name: "Scuba Diving",
+        beach: "Great Barrier Reef",
+        location: "Queensland, Australia",
+        price: "$120/dive",
+        timeSlot: "8:00 AM - 3:00 PM",
+        description: "Explore underwater beauty and vibrant marine life.",
+        image: "D:/Demo/img/scuba.jpg"
       }
-      
-      // Call fetchData when the page loads
-      fetchData().catch(console.error);
-      </script>
+    ];
+
+    // Render Activities
+    const renderActivities = () => {
+      const beachList = document.getElementById('beach-list');
+      beachList.innerHTML = '';
+
+      activities.forEach(activity => {
+        const card = document.createElement('div');
+        card.className = 'card';
+
+        card.innerHTML = `
+          <img src="${activity.image}" alt="${activity.name}">
+          <div>
+            <h2>${activity.name}</h2>
+            <p><strong>Beach:</strong> ${activity.beach}</p>
+            <p><strong>Location:</strong> ${activity.location}</p>
+            <p class="price"><strong>Price:</strong> ${activity.price}</p>
+            <p class="time"><strong>Time Slot:</strong> ${activity.timeSlot}</p>
+            <p><strong>Description:</strong> ${activity.description}</p>
+          </div>
+        `;
+
+        beachList.appendChild(card);
+      });
+    };
+
+    // Call Render Function
+    renderActivities();
+  </script>
 </body>
 </html>
