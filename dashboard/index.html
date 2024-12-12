@@ -245,6 +245,13 @@
         </a>
       </li>
 
+      <li>
+        <a href="D:\Demo\dashboard\review.html">
+          <i class='bx bx-user-check'></i>
+          <span class="text">User Feedback</span>
+        </a>
+      </li>
+
 
     </ul>
     <ul class="side-menu">
@@ -261,7 +268,7 @@
         </a>
       </li>
       <li>
-        <a href="" class="logout">
+        <a href="login.html" class="logout">
           <i class='bx bxs-log-out-circle'></i>
           <span class="text">Logout</span>
         </a>
@@ -337,7 +344,7 @@
       <div class="info-row">
         <div class="info-item"><span>Weather:</span> <span id="weather"></span></div>
         <div class="info-item"><span>Wind:</span> <span id="wind"></span></div>
-        <div class="info-item"><span>Water:</span> <span id="water"></span></div>
+        <div class="info-item"><span>Feels Like:</span> <span id="water"></span></div>
         <div class="info-item"><span>Minimum Temperature:</span> <span id="temp_min"></span></div>
         <div class="info-item"><span>Maximum Temperature:</span> <span id="temp_max"></span></div>
         <div class="info-item"><span>Humidity:</span> <span id="humidity"></span></div>
@@ -450,7 +457,7 @@
         return {
           weather: `${data.weather[0].description}, ${data.main.temp}°C`,
           wind: `${data.wind.speed} km/h`,
-          water: `${data.main.feels_like}Feels like`,
+          water: `${data.main.feels_like}°C`,
           tempMin: `${data.main.temp_min}°C`,
           tempMax: `${data.main.temp_max}°C`,
           humidity: `${data.main.humidity}%`,

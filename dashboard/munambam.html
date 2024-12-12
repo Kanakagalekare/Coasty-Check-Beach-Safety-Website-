@@ -9,6 +9,39 @@
 	<!-- My CSS -->
 	<link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="style2.css">
+	<style>
+
+
+			/* Style for the container div to align content to the right */
+			.button-container {
+				            
+				display: flex;             
+				justify-content: flex-end; 
+				padding: 20px;             
+			}
+
+			/* Style for the Booking History button */
+			.booking-button {
+				background-color: #4CAF50;      /* Green background */
+				border: none;                    /* Removes default border */
+				color: white;                    /* White text color */
+				padding: 12px 24px;              /* Vertical and horizontal padding */
+				text-align: center;              /* Centers the text */
+				text-decoration: none;           /* Removes underline from text */
+				display: inline-block;           /* Allows setting width and height */
+				font-size: 16px;                 /* Increases font size */
+				border-radius: 5px;              /* Rounds the corners */
+				cursor: pointer;                 /* Changes cursor on hover */
+				transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+			}
+
+			/* Hover effect for the button */
+			.booking-button:hover {
+				background-color: #45a049; /* Darker green on hover */
+			}
+
+
+	</style>
 
 	<title>Coasty Check</title>
 </head>
@@ -60,6 +93,13 @@
 				  <span class="text">Coastal Map</span>
 				</a>
 			  </li>
+
+			  <li>
+				<a href="D:\Demo\dashboard\review.html">
+				  <i class='bx bx-user-check'></i>
+				  <span class="text">User Feedback</span>
+				</a>
+			  </li>
 		
 			
 		</ul>
@@ -100,9 +140,13 @@
 						</li>
 					</ul>
 				</div>
+
 				
 			</div>
-            
+            <div class="button-container">
+				<a  href="booking-B.html"><button class="booking-button">Booking History</button></a>
+			</div>
+
     <!-- CONTENT -->
     
         <div class="container">

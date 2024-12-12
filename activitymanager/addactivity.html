@@ -217,7 +217,7 @@
                 <option value="Jet Skiing">Jet Skiing</option>
                 <option value="Parasaling">Parasaling</option>
                 <option value="Boating">Boating</option>
-                <option value="Boating">Scuba Diving</option>
+                <option value="Scuba Diving">Scuba Diving</option>
                 <option value="Other">Other</option>
             </select>
 
@@ -225,7 +225,7 @@
               <input type="text" id="location" placeholder="Location Details">
               <input type="time" id="startTime" placeholder="Start Time">
               <input type="time" id="endTime" placeholder="End Time">
-              <input type="date" id="activityDate" placeholder="Activity Date">
+              
               <input type="text" id="activityPrice" placeholder="Price (optional)">
               <input type="text" id="contactInfo" placeholder="Contact Information">
               <button id="addActivityButton">Add Activity</button>
@@ -278,11 +278,11 @@
             const location = document.getElementById('location').value.trim();
             const startTime = document.getElementById('startTime').value.trim();
             const endTime = document.getElementById('endTime').value.trim();
-            const activityDate = document.getElementById('activityDate').value.trim();
+            
             const activityPrice = document.getElementById('activityPrice').value.trim();
             const contactInfo = document.getElementById('contactInfo').value.trim();
 
-            if (beachName && activityName && activityDescription && location && startTime && endTime && activityDate && contactInfo) {
+            if (beachName && activityName && activityDescription && location && startTime && endTime &&  contactInfo) {
                 try {
                     const newActivityRef = push(ref(db, 'beach-activities'));
                     await set(newActivityRef, {
@@ -292,7 +292,7 @@
                         location,
                         startTime,
                         endTime,
-                        activityDate,
+                       
                         price: activityPrice || 'Not specified',
                         contactInfo,
                         timestamp: Date.now()
@@ -306,7 +306,6 @@
                     document.getElementById('location').value = '';
                     document.getElementById('startTime').value = '';
                     document.getElementById('endTime').value = '';
-                    document.getElementById('activityDate').value = '';
                     document.getElementById('activityPrice').value = '';
                     document.getElementById('contactInfo').value = '';
                 } catch (error) {
@@ -336,7 +335,7 @@
                             <h4>${data.activityName} at ${data.beachName}</h4>
                             <p><strong>Description:</strong> ${data.description}</p>
                             <p><strong>Location:</strong> ${data.location}</p>
-                            <p><strong>Date:</strong> ${data.activityDate}</p>
+                            
                             <p><strong>Time:</strong> ${data.startTime} - ${data.endTime}</p>
                             <p><strong>Price:</strong> ${data.price}</p>
                             <p><strong>Contact:</strong> ${data.contactInfo}</p>

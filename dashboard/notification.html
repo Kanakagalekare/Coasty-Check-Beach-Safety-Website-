@@ -160,6 +160,13 @@
                   <span class="text">Coastal Map</span>
                 </a>
               </li>
+
+              <li>
+                <a href="D:\Demo\dashboard\review.html">
+                  <i class='bx bx-user-check'></i>
+                  <span class="text">User Feedback</span>
+                </a>
+              </li>
         
 		</ul>
 		<ul class="side-menu">
@@ -212,20 +219,16 @@
             <div class="main-container">
                 <!-- Form -->
                 <div class="form-container">
-                    <h1>Add Alerts</h1>
+                    <h1>Add Notification</h1>
                     <input type="text" id="objectID" placeholder="Object ID">
-                    <input type="text" id="alertName" placeholder="Alert Title">
-                    <textarea id="alertMessage" placeholder="Alert Message"></textarea>
-                    <input type="text" id="district" placeholder="District">
-                    <input type="text" id="state" placeholder="State">
-                    <input type="text" id="color" placeholder="Enter Alert Color">
-                    <input type="date" id="issueDate" title="Issue Date">
-                    <button id="addAlertButton">Post Alert</button>
+                    <input type="text" id="alertName" placeholder="Title">
+                    <textarea id="alertMessage" placeholder="Message"></textarea>
+                    <button id="addAlertButton">Post Notification</button>
                 </div>
         
                
                 <div class="alert-container">
-                    <h1>Posted Alerts</h1>
+                    <h1>Posted Notifications</h1>
                     <div class="alert-list" id="alertList"></div>
                 </div>
             </div>
@@ -258,32 +261,22 @@
                     const objectID = document.getElementById('objectID').value.trim();
                     const alertName = document.getElementById('alertName').value.trim();
                     const alertMessage = document.getElementById('alertMessage').value.trim();
-                    const district = document.getElementById('district').value.trim();
-                    const state = document.getElementById('state').value.trim();
-                    const color = document.getElementById('color').value.trim();
-                    const issueDate = document.getElementById('issueDate').value.trim();
+                   
         
-                    if (objectID && alertName && alertMessage && district && state && color && issueDate) {
+                    if (objectID && alertName && alertMessage) {
                         try {
                             const newAlertRef = push(ref(db, 'alerts'));
                             await set(newAlertRef, {
                                 objectID,
                                 name: alertName,
                                 message: alertMessage,
-                                district: district,
-                                state: state,
-                                color,
-                                issueDate,
                                 timestamp: Date.now()
                             });
                             alert("Alert posted successfully!");
                             document.getElementById('objectID').value = '';
                             document.getElementById('alertName').value = '';
                             document.getElementById('alertMessage').value = '';
-                            document.getElementById('district').value.trim();
-                            document.getElementById('state').value.trim();
-                            document.getElementById('color').value = '';
-                            document.getElementById('issueDate').value = '';
+                            
                         } catch (error) {
                             console.error("Error posting alert:", error);
                         }
@@ -306,10 +299,7 @@
                                 <h4>${data.name}</h4>
                                 <p><strong>Object ID:</strong> ${data.objectID}</p>
                                 <p>${data.message}</p>
-                                <p><strong>District:</strong> ${data.district}</p>
-                                <p><strong>State:</strong> ${data.state}</p>
-                                <p><strong>Color:</strong> <span style="background:${data.color}; padding: 2px 10px; border-radius: 3px;"></span></p>
-                                <p><strong>Issue Date:</strong> ${data.issueDate}</p>
+                                
                                 <small>${new Date(data.timestamp).toLocaleString()}</small>
                                 <div class="actions">
                                    

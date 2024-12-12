@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        .login-container {
+            width: 300px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .error {
+            color: red;
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="Enter your email">
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Enter your password">
+        </div>
+        <button id="loginButton">Login</button>
+        <div id="error" class="error"></div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-database.js"></script>
+    <script>
+      // Firebase configuration
+      const firebaseConfig = {
+          apiKey: "AIzaSyA5PPJOvBXrt1BXLXpNirWYLqYTi9PuyGg",
+          authDomain: "finalproject-7d8fd.firebaseapp.com",
+          databaseURL: "https://finalproject-7d8fd-default-rtdb.firebaseio.com/",
+          projectId: "finalproject-7d8fd",
+          storageBucket: "finalproject-7d8fd.appspot.com",
+          messagingSenderId: "1098406126947",
+          appId: "1:1098406126947:web:81cd954a947196683e9f56",
+          measurementId: "G-K0JHYPP2E9"
+      };
+
+      // Initialize Firebase
+      const app = firebase.initializeApp(firebaseConfig);
+      const auth = firebase.auth();
+      const db = firebase.database();
+
+      // DOM Elements
+      const emailField = document.getElementById("email");
+      const passwordField = document.getElementById("password");
+      const loginButton = document.getElementById("loginButton");
+      const errorDiv = document.getElementById("error");
+
+      loginButton.addEventListener("click", () => {
+          const email = emailField.value.trim();
+          const password = passwordField.value.trim();
+
+          if (!email || !password) {
+              errorDiv.textContent = "Please fill in all fields.";
+              return;
+          }
+
+          auth.signInWithEmailAndPassword(email, password)
+              .then((userCredential) => {
+                  const userId = userCredential.user.uid;
+                  const userRef = db.ref(`users/${userId}`);
+
+                  userRef.once("value")
+                      .then((snapshot) => {
+                          if (snapshot.exists()) {
+                              const userData = snapshot.val();
+                              const role = userData.role;
+
+                              if (email === "beachManager@example.com") {
+                                  window.location.href = "D:/Demo/dashboard/index.html";
+                              } else if (role === "activityManager") {
+                                  window.location.href = "D:/Demo/activitymanager/index.html";
+                              } else {
+                                  errorDiv.textContent = "Access denied. Role not recognized.";
+                              }
+                          } else {
+                              errorDiv.textContent = "User data not found. Please contact support.";
+                          }
+                      })
+                      .catch((dbError) => {
+                          errorDiv.textContent = "Database error: " + dbError.message;
+                      });
+              })
+              .catch((authError) => {
+                  if (authError.code === "auth/user-not-found") {
+                      errorDiv.textContent = "User not found. Please check your email.";
+                  } else if (authError.code === "auth/wrong-password") {
+                      errorDiv.textContent = "Incorrect password. Please try again.";
+                  } else {
+                      errorDiv.textContent = authError.message;
+                  }
+              });
+      });
+    </script>
+</body>
+</html>

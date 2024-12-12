@@ -1,249 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-  <title>Beach Reviews</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f5f5f5;
-    }
-
-    .main-container {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-
-    .beaches-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-    }
-
-    .beach-reviews-section {
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      padding: 20px;
-    }
-
-    .reviews-container {
-      max-height: 400px;
-      overflow-y: auto;
-    }
-
-    .review-item {
-      background: #f9f9f9;
-      border-radius: 8px;
-      padding: 15px;
-      margin-bottom: 15px;
-    }
-
-    .review-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-
-    .review-name {
-      font-weight: bold;
-      color: #333;
-    }
-
-    .review-rating {
-      color: #ffc107;
-    }
-
-    .review-text {
-      color: #666;
-      margin-bottom: 10px;
-    }
-
-    .review-date {
-      color: #999;
-      font-size: 0.8em;
-    }
-
-    .beach-name {
-      text-align: center;
-      color: #2196f3;
-      margin-bottom: 20px;
-      font-size: 1.5em;
-      font-weight: bold;
-    }
-
-    .no-reviews {
-      text-align: center;
-      color: #666;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beach Alert Notification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 100%;
+            max-width: 500px;
+        }
+        h1 {
+            text-align: center;
+            color: #2196f3;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        .alert-button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .alert-button:hover {
+            background-color: #45a049;
+        }
+        #errorMessage {
+            color: red;
+            text-align: center;
+            margin-top: 10px;
+            display : none;
+        }
+    </style>
 </head>
 <body>
-  <div class="main-container">
-    <h1 style="text-align: center; color: #2196f3;">Beach Reviews</h1>
-    <div id="beachesContainer" class="beaches-container">
-      <!-- Beach review sections will be dynamically added here -->
+    <div class="container">
+        <h1>Beach Alert Notification</h1>
+        <form id="alertForm">
+            <div class="form-group">
+                <label for="phoneNumber">Phone Number (with country code):</label>
+                <input type="text" id="phoneNumber" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Message:</label>
+                <textarea id="message" required></textarea>
+            </div>
+            <button type="submit" class="alert-button">Send Alert</button>
+            <div id="errorMessage"></div>
+        </form>
     </div>
-  </div>
+    <script>
+        document.getElementById('alertForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            const message = document.getElementById('message').value;
+            const errorMessage = document.getElementById('errorMessage');
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-    import { 
-      getFirestore, 
-      collection, 
-      getDocs, 
-      orderBy, 
-      query 
-    } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+            try {
+                const response = await fetch('http://localhost:3000/send-sms', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ phoneNumber, message }),
+                });
 
-    // Firebase configuration 
-    const firebaseConfig = {
-      apiKey: "AIzaSyA5PPJOvBXrt1BXLXpNirWYLqYTi9PuyGg",
-      authDomain: "finalproject-7d8fd.firebaseapp.com",
-      projectId: "finalproject-7d8fd",
-      storageBucket: "finalproject-7d8fd.appspot.com",
-      messagingSenderId: "1098406126947",
-      appId: "1:1098406126947:web:81cd954a947196683e9f56",
-      measurementId: "G-K0JHYPP2E9"
-    };
-
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    // Function to create review element
-    function createReviewElement(review) {
-      // Format date
-      const date = review.date 
-        ? new Date(review.date.seconds * 1000).toLocaleDateString('en-US', {
-            month: 'short', 
-            day: 'numeric', 
-            year: 'numeric'
-          })
-        : 'Date unavailable';
-
-      // Create star rating
-      const stars = '★'.repeat(Math.floor(review.rating)) + 
-                    '☆'.repeat(5 - Math.floor(review.rating));
-
-      const reviewElement = document.createElement('div');
-      reviewElement.className = 'review-item';
-      reviewElement.innerHTML = `
-        <div class="review-header">
-          <div class="review-name">${review.name || 'Anonymous'}</div>
-          <div class="review-rating">${stars}</div>
-        </div>
-        <div class="review-text">${review.review || 'No review text'}</div>
-        <div class="review-date">${date}</div>
-      `;
-
-      return reviewElement;
-    }
-
-    // Fetch and display reviews for all beaches
-    async function fetchAllBeachReviews() {
-      try {
-        // Get reference to beach_reviews collection
-        const beachReviewsRef = collection(db, 'beach_reviews');
-        
-        // Get all beach documents
-        const beachesSnapshot = await getDocs(beachReviewsRef);
-        const beachesContainer = document.getElementById('beachesContainer');
-        
-        // Clear previous content
-        beachesContainer.innerHTML = '';
-
-        // Iterate through each beach
-        for (const beachDoc of beachesSnapshot.docs) {
-          const beachName = beachDoc.id;
-          
-          // Create beach reviews section
-          const beachSection = document.createElement('div');
-          beachSection.className = 'beach-reviews-section';
-          
-          // Create beach name element
-          const beachNameElement = document.createElement('div');
-          beachNameElement.className = 'beach-name';
-          beachNameElement.textContent = beachName;
-          beachSection.appendChild(beachNameElement);
-
-          // Create reviews container
-          const reviewsContainer = document.createElement('div');
-          reviewsContainer.className = 'reviews-container';
-
-          // Create no reviews element
-          const noReviewsElement = document.createElement('div');
-          noReviewsElement.className = 'no-reviews';
-          noReviewsElement.textContent = 'Loading reviews...';
-          reviewsContainer.appendChild(noReviewsElement);
-
-          // Add to beach section
-          beachSection.appendChild(reviewsContainer);
-          
-          // Add to main container
-          beachesContainer.appendChild(beachSection);
-
-          // Create a reference to the reviews collection for this specific beach
-          const reviewsRef = collection(db, 'beach_reviews', beachName, 'reviews');
-          
-          // Create a query to order reviews by date (descending)
-          const reviewsQuery = query(reviewsRef, orderBy('date', 'desc'));
-
-          try {
-            // Get the reviews
-            const querySnapshot = await getDocs(reviewsQuery);
-
-            // Clear loading message
-            reviewsContainer.innerHTML = '';
-
-            if (querySnapshot.empty) {
-              const noReviewsMessage = document.createElement('div');
-              noReviewsMessage.className = 'no-reviews';
-              noReviewsMessage.textContent = 'No reviews yet.';
-              reviewsContainer.appendChild(noReviewsMessage);
-              continue;
+                const data = await response.json();
+                if (data.success) {
+                    alert('Alert sent successfully!');
+                } else {
+                    throw new Error(data.error);
+                }
+            } catch (error) {
+                errorMessage.textContent = 'Error sending alert: ' + error.message;
+                errorMessage.style.display = 'block';
             }
-
-            // Limit to 5 most recent reviews
-            const limitedReviews = querySnapshot.docs.slice(0, 5);
-
-            // Iterate through reviews
-            limitedReviews.forEach((doc) => {
-              const review = doc.data();
-              const reviewElement = createReviewElement(review);
-              reviewsContainer.appendChild(reviewElement);
-            });
-
-          } catch (reviewError) {
-            console.error(Error fetching reviews for ${beachName}:, reviewError);
-            const errorElement = document.createElement('div');
-            errorElement.className = 'no-reviews';
-            errorElement.textContent = 'Error loading reviews.';
-            reviewsContainer.appendChild(errorElement);
-          }
-        }
-      } catch (error) {
-        console.error("Error fetching beaches:", error);
-        const beachesContainer = document.getElementById('beachesContainer');
-        beachesContainer.innerHTML = `
-          <div style="text-align: center; color: red;">
-            Error loading beach reviews. Please try again later.
-          </div>
-        `;
-      }
-    }
-
-    // Fetch reviews when page loads
-    fetchAllBeachReviews();
-
-    // Optional: Periodic refresh of reviews
-    setInterval(fetchAllBeachReviews, 60000); // Refresh every minute
-  </script>
+        });
+    </script>
 </body>
 </html>
